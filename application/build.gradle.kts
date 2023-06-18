@@ -120,6 +120,7 @@ compose.experimental {
     uikit.application {
         bundleIdPrefix = project.group.toString()
         projectName = rootProject.name
+        configurations
         deployConfigurations {
             simulator("IPhone13Pro") {
                 //Usage: ./gradlew iosDeployIPhone8Debug

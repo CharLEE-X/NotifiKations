@@ -1,4 +1,4 @@
-rootProject.name = "Notifications"
+rootProject.name = "NotifiKations"
 
 include(
     ":application",
