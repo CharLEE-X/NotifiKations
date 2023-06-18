@@ -1,7 +1,8 @@
 rootProject.name = "NotifiKations"
 
 include(
-    ":application",
+    ":androidApp",
+    ":compose",
     ":notifications",
 )
 

@@ -1,0 +1,16 @@
+PODS:
+  - compose (1.0)
+
+DEPENDENCIES:
+  - compose (from `../compose`)
+
+EXTERNAL SOURCES:
+  compose:
+    :path: "../compose"
+
+SPEC CHECKSUMS:
+  compose: 0c39a02d98d3557db1241f3be88afd99c2fdf0c8
+
+PODFILE CHECKSUM: 062dbc252d8ff6eae08c89399163436a2c587f0d
+
+COCOAPODS: 1.11.3

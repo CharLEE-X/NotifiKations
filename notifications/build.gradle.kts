@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    kotlin("plugin.serialization")
 }
 
 group = "com.charleex.notifications"
@@ -23,7 +24,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-
+                implementation(libs.kotlin.uuid)
+                implementation(libs.kotlin.dateTime)
+                implementation(libs.kotlin.serialization)
             }
         }
         val commonTest by getting {
@@ -33,15 +36,12 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.5.1")
-                api("androidx.core:core-ktx:1.9.0")
+                implementation(libs.androidx.core)
             }
         }
         val androidUnitTest by getting {
             dependsOn(commonTest)
-            dependencies {
-                implementation("junit:junit:4.13.2")
-            }
+            dependencies {}
         }
         val androidInstrumentedTest by getting {
             dependsOn(commonTest)
@@ -60,4 +60,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }
