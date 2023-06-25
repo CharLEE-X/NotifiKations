@@ -40,18 +40,6 @@ kotlin {
             }
         }
     }
-
-    afterEvaluate {
-        publishing {
-            publications {
-                create<MavenPublication>("release") {
-                    groupId = libs.versions.groupId.get()
-                    artifactId = libs.versions.artifactId.get()
-                    version = libs.versions.version.get()
-                }
-            }
-        }
-    }
 }
 
 android {
@@ -69,4 +57,14 @@ android {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = libs.versions.groupId.get()
+            artifactId = libs.versions.artifactId.get()
+            version = libs.versions.version.get()
+        }
+    }
 }

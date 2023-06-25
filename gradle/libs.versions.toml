@@ -1,7 +1,7 @@
 [versions]
 artifactId = "NotifiKations"
 groupId = "com.charleex.notifications"
-version = "0.1.0"
+version = "0.1.1"
 
 activityCompose = "1.7.1"
 agp = "8.0.2"
