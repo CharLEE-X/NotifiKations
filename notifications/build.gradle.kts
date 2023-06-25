@@ -9,6 +9,7 @@ group = libs.versions.groupId.get()
 version = libs.versions.version.get()
 
 kotlin {
+    jvmToolchain(17)
     android {
         publishLibraryVariants("release", "debug")
     }
@@ -50,13 +51,13 @@ android {
         minSdk = 26
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
 publishing {

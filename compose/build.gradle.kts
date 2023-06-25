@@ -11,14 +11,9 @@ version = libs.versions.version.get()
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
+    jvmToolchain(17)
 
-    android {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "11"
-            }
-        }
-    }
+    android()
     ios()
     iosSimulatorArm64()
 
@@ -65,8 +60,8 @@ android {
     defaultConfig {
         minSdk = 26
     }
-}
-
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
