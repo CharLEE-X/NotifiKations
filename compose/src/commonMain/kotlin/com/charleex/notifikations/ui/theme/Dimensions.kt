@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 
 internal object Dimensions {
+    const val TOP_BAR_HEIGHT = 56
     const val BOTTOM_BAR_HEIGHT = 56
 }
 

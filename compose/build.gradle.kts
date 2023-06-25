@@ -27,7 +27,6 @@ kotlin {
         homepage = "Link to the Shared Module homepage"
         version = "1.0"
         ios.deploymentTarget = "14.1"
-        podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "compose"
             isStatic = true
@@ -46,11 +45,7 @@ kotlin {
                 implementation(compose.animationGraphics)
                 implementation(compose.material)
                 implementation(compose.materialIconsExtended)
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
+                implementation(libs.kotlin.dateTime)
             }
         }
         val androidMain by getting {
@@ -68,6 +63,10 @@ android {
     namespace = project.group.toString()
     compileSdk = 33
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
     }
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }

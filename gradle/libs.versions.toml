@@ -1,6 +1,6 @@
 [versions]
 activityCompose = "1.7.1"
-agp = "8.2.0-alpha08"
+agp = "8.0.2"
 androidxCore = "1.10.1"
 androidxMaterial = "1.9.0"
 androidxTestCore = "1.5.0"
@@ -11,13 +11,16 @@ composeMultiplatform = "1.4.0"
 coroutines = "1.6.4" # version 1.7.0-1.7.1 has a bug that breaks the ios app while compiling Job()
 junit = "4.13.2"
 junitExt = "1.1.5"
+kermit = "2.0.0-RC4"
 koin = "3.4.0"
 kotlin = "1.8.20" # Max Kotlin version supported by Compose-Multiplatform 1.4.0 is Kotlin 1.8.20
 kotlinxDateTime = "0.4.0"
 ktLint = "10.2.1"
 mockative = "1.2.5"
+multiplatformSettings = "1.0.0"
 playServices = "21.0.1"
 robolectric = "4.9"
+security = "1.1.0-alpha06"
 serialization = "1.5.1"
 turbine = "0.12.1"
 uuid = "0.7.0"
@@ -26,6 +29,7 @@ uuid = "0.7.0"
 androidx-activity = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-material = { module = "com.google.android.material:material", version.ref = "androidxMaterial" }
+androidx-securityCrypto = { module = "androidx.security:security-crypto", version.ref = "security" }
 
 ballast-core = { module = "io.github.copper-leaf:ballast-core", version.ref = "ballast" }
 ballast-navigation = { module = "io.github.copper-leaf:ballast-navigation", version.ref = "ballast" }
@@ -34,11 +38,15 @@ buildKonfig = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 
+
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 
 kotlin-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
+kotlin-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
+
+multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 
 test-android-core = { module = "androidx.test:core", version.ref = "androidxTestCore" }
 test-android-junit = { module = "junit:junit", version.ref = "junit" }

@@ -12,8 +12,8 @@ android {
     compileSdk = 33
     defaultConfig {
         applicationId = project.group.toString()
-        minSdk = 24
-        targetSdk = 33
+        minSdk = 26
+        targetSdk = targetSdk
         versionCode = 1
         versionName = "1.0"
     }

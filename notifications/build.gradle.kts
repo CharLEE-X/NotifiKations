@@ -24,9 +24,12 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(libs.coroutines.core)
                 implementation(libs.kotlin.uuid)
                 implementation(libs.kotlin.dateTime)
                 implementation(libs.kotlin.serialization)
+                implementation(libs.kotlin.kermit)
+                implementation(libs.multiplatformSettings)
             }
         }
         val commonTest by getting {
@@ -37,6 +40,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(libs.androidx.core)
+                implementation(libs.androidx.securityCrypto)
             }
         }
         val androidUnitTest by getting {
@@ -46,6 +50,15 @@ kotlin {
         val androidInstrumentedTest by getting {
             dependsOn(commonTest)
         }
+        val iosMain by getting {
+            dependsOn(commonMain)
+        }
+        val iosTest by getting {
+            dependsOn(commonTest)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
     }
 }
 
@@ -54,7 +67,7 @@ android {
     compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
