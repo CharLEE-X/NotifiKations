@@ -5,6 +5,7 @@ include(
     ":compose",
     ":notifications",
 )
+includeBuild("convention-plugins")
 
 pluginManagement {
     repositories {

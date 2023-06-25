@@ -1,8 +1,12 @@
+/*
+ * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
     kotlin("plugin.serialization")
-    id("maven-publish")
+    id("convention.publication")
 }
 
 group = libs.versions.groupId.get()
@@ -58,14 +62,4 @@ android {
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-            groupId = libs.versions.groupId.get()
-            artifactId = libs.versions.artifactId.get()
-            version = libs.versions.version.get()
-        }
-    }
 }
