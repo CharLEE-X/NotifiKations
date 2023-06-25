@@ -4,8 +4,8 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "com.charleex.application"
-version = "1.0-SNAPSHOT"
+group = libs.versions.groupId.get()
+version = libs.versions.version.get()
 
 android {
     namespace = project.group.toString()

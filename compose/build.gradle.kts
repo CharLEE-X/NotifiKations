@@ -5,8 +5,8 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "com.charleex.compose"
-version = "1.0-SNAPSHOT"
+group = libs.versions.groupId.get()
+version = libs.versions.version.get()
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {

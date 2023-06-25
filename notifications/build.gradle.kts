@@ -5,8 +5,8 @@ plugins {
     id("maven-publish")
 }
 
-group = "com.charleex.notifications"
-version = "1.0-SNAPSHOT"
+group = libs.versions.groupId.get()
+version = libs.versions.version.get()
 
 kotlin {
     android {
@@ -45,9 +45,9 @@ kotlin {
         publishing {
             publications {
                 create<MavenPublication>("release") {
-                    groupId = project.group.toString()
-                    artifactId = project.name
-                    version = project.version.toString()
+                    groupId = libs.versions.groupId.get()
+                    artifactId = libs.versions.artifactId.get()
+                    version = libs.versions.version.get()
                 }
             }
         }
