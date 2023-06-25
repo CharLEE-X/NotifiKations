@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     kotlin("plugin.serialization")
+    id("maven-publish")
 }
 
 group = "com.charleex.notifications"
@@ -9,7 +10,7 @@ version = "1.0-SNAPSHOT"
 
 kotlin {
     android {
-        publishAllLibraryVariants()
+        publishLibraryVariants("release", "debug")
     }
     ios {
         binaries {
@@ -32,32 +33,23 @@ kotlin {
                 implementation(libs.multiplatformSettings)
             }
         }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
         val androidMain by getting {
             dependencies {
                 implementation(libs.androidx.core)
                 implementation(libs.androidx.securityCrypto)
             }
         }
-        val androidUnitTest by getting {
-            dependsOn(commonTest)
-            dependencies {}
-        }
-        val androidInstrumentedTest by getting {
-            dependsOn(commonTest)
-        }
-        val iosMain by getting {
-            dependsOn(commonMain)
-        }
-        val iosTest by getting {
-            dependsOn(commonTest)
-        }
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
+    }
+
+    afterEvaluate {
+        publishing {
+            publications {
+                create<MavenPublication>("release") {
+                    groupId = project.group.toString()
+                    artifactId = project.name
+                    version = project.version.toString()
+                }
+            }
         }
     }
 }
