@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -11,14 +11,15 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.os.RemoteException
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import co.touchlab.kermit.Logger
-import com.charleex.notifications.R
+import com.charleeex.notifikations.R
+import com.charleex.notifikations.NotificationService.Companion.COLLECTING_LOCATION_NOTIFICATION_ID
 import com.charleex.notifikations.delegate.NotificationLocalPermissionDelegate
 import com.charleex.notifikations.delegate.readNotificationStringOption
 import com.charleex.notifikations.model.NotificationSettings
@@ -26,16 +27,20 @@ import com.charleex.notifikations.model.NotificationType
 import com.charleex.notifikations.model.Permission
 import com.charleex.notifikations.model.PermissionState
 import com.charleex.notifikations.model.notGranted
+import com.charleex.notifikations.util.ONE_MINUTE_IN_MILLIS
+import com.charleex.notifikations.util.PERMISSION_CHECK_FLOW_FREQUENCY
+import com.charleex.notifikations.util.infiniteFlowOf
 import com.russhwolf.settings.SharedPreferencesSettings
-import kotlinx.datetime.Clock
+import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import java.lang.System.currentTimeMillis
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.seconds
 
+
+@Suppress("MatchingDeclarationName")
+/**
+ * The [NotifiKations] class implements provides methods for initializing,
+ * sending notifications, and canceling notifications.
+ */
 actual class NotifiKations(
     private val context: Context,
     activity: Lazy<Activity>,
@@ -43,7 +48,7 @@ actual class NotifiKations(
     private val logger: Logger = Logger.withTag(NotifiKations::class.java.simpleName)
 
     private val settings = SharedPreferencesSettings.Factory(context)
-        .create(NOTIFIKATION_SETTINGS)
+        .create(NOTIFICATION_SETTINGS)
 
     private val notificationManager: NotificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -75,17 +80,16 @@ actual class NotifiKations(
     )
 
     @SuppressLint("MissingPermission")
-    override suspend fun schedule(notificationType: NotificationType): Notification? {
+    actual override suspend fun schedule(notificationType: NotificationType): Any? {
         if (checkPermission(Permission.LOCAL_NOTIFICATIONS).notGranted()) {
             return null
         }
-        val notificationId = NotificationService.COLLECTING_LOCATION_NOTIFICATION_ID
-        return handleNotificationType(notificationType, notificationId)
+        return handleNotificationType(notificationType)
     }
 
     private fun handleNotificationType(
         notificationType: NotificationType,
-        notificationId: Int,
+        notificationId: Int = COLLECTING_LOCATION_NOTIFICATION_ID,
     ): Notification? {
         return when (notificationType) {
             is NotificationType.Scheduled -> null
@@ -110,33 +114,37 @@ actual class NotifiKations(
         }
     }
 
-    override suspend fun cancelNotifications(ids: List<String>) {
+    actual override suspend fun cancelNotifications(ids: List<String>) {
         if (ids.isEmpty()) return
         ids.forEach { notificationId ->
             try {
                 logger.v { "Cancelling pending notification with ID: $notificationId" }
                 alarmManager.cancel(createPendingIntent(notificationId.length))
                 notificationManager.cancel(notificationId.toInt())
-            } catch (e: RemoteException) {
-                logger.w(e) { "Couldn't cancel notification with ID '$notificationId'." }
             } catch (e: NumberFormatException) {
                 logger.w(e) { "Couldn't find notification with ID '$notificationId'." }
-            } catch (e: Exception) {
-                logger.w(e) { "Couldn't cancel notification with ID '$notificationId'." }
             }
         }
     }
 
-    override fun checkPermission(permission: Permission): PermissionState {
+    actual override fun checkPermission(permission: Permission): PermissionState {
         return notificationLocalPermissionDelegate.getPermissionState()
     }
 
-    override suspend fun providePermission(permission: Permission) {
+    actual override fun permissionState(permission: Permission): Flow<PermissionState> {
+        return infiniteFlowOf(PERMISSION_CHECK_FLOW_FREQUENCY) { checkPermission(permission) }
+    }
+
+    actual override suspend fun providePermission(permission: Permission) {
         notificationLocalPermissionDelegate.providePermission()
     }
 
-    override fun openSettingPage(permission: Permission) {
-        notificationLocalPermissionDelegate.openSettingPage()
+    actual override fun openSettingPage(permission: Permission) {
+        try {
+            notificationLocalPermissionDelegate.openSettingPage()
+        } catch (e: ActivityNotFoundException) {
+            logger.e(e) { "Couldn't open setting page." }
+        }
     }
 
     @SuppressLint("MissingPermission") // Permission checked in "schedule" function.
@@ -146,7 +154,7 @@ actual class NotifiKations(
         body: String?,
     ): Notification {
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID).apply {
-            // TODO: This icon will need to come from the config.
+            // This icon will need to come from the config.
             setSmallIcon(R.drawable.ic_baseline_directions_car_24)
             setContentTitle(title)
             setContentText(body)
@@ -158,10 +166,16 @@ actual class NotifiKations(
             }
             setOngoing(true)
             setOnlyAlertOnce(true)
-            setWhen(currentTimeMillis() + 60_000)
+            setWhen(currentTimeMillis() + ONE_MINUTE_IN_MILLIS)
         }
 
-        logger.v { "Scheduling local notification $id, time ${Instant.fromEpochMilliseconds(currentTimeMillis() + 60_000)}." }
+        logger.v {
+            "Scheduling local notification $id, time ${
+                Instant.fromEpochMilliseconds(
+                    currentTimeMillis() + ONE_MINUTE_IN_MILLIS
+                )
+            }."
+        }
         return builder.build()
     }
 
@@ -182,12 +196,10 @@ actual class NotifiKations(
 
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "NOTIFICATION_CHANNEL_ID"
-
-        const val NOTIFICATION_TYPE_DISMISS = "DISMISS"
-
-        const val NOTIFICATION_PAYLOAD_ID = "NOTIFICATION_PAYLOAD_ID"
-        const val NOTIFICATION_PAYLOAD_TYPE = "NOTIFICATION_PAYLOAD_TYPE"
-        const val NOTIFICATION_PAYLOAD_NOTIFICATION = "NOTIFICATION_PAYLOAD_NOTIFICATION"
-        const val NOTIFIKATION_SETTINGS = "NOTIFIKATION_SETTINGS"
+        internal const val NOTIFICATION_TYPE_DISMISS = "DISMISS"
+        internal const val NOTIFICATION_PAYLOAD_ID = "NOTIFICATION_PAYLOAD_ID"
+        internal const val NOTIFICATION_PAYLOAD_TYPE = "NOTIFICATION_PAYLOAD_TYPE"
+        internal const val NOTIFICATION_PAYLOAD_NOTIFICATION = "NOTIFICATION_PAYLOAD_NOTIFICATION"
+        internal const val NOTIFICATION_SETTINGS = "NOTIFIKATION_SETTINGS"
     }
 }

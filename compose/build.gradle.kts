@@ -1,4 +1,6 @@
-/*
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -9,25 +11,25 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = libs.versions.groupId.get()
-version = libs.versions.version.get()
+group = ProjectConfig.groupId + ".${ProjectConfig.artifactId}.compose"
+version = ProjectConfig.version
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     targetHierarchy.default()
-    jvmToolchain(17)
+    jvmToolchain(ProjectConfig.jvmTargetInt)
 
     android()
     ios()
     iosSimulatorArm64()
 
     cocoapods {
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        version = "1.0"
-        ios.deploymentTarget = "14.1"
+        summary = ProjectConfig.description
+        homepage = ProjectConfig.url
+        version = ProjectConfig.version
+        ios.deploymentTarget = ProjectConfig.iosDevelopmentTarget
         framework {
-            baseName = "compose"
+            baseName = project.name
             isStatic = true
         }
     }
@@ -36,7 +38,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":notifications"))
+                implementation(projects.notifications)
                 implementation(compose.ui)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -60,12 +62,12 @@ kotlin {
 
 android {
     namespace = project.group.toString()
-    compileSdk = 33
+    compileSdk = ProjectConfig.androidCompileSdk
     defaultConfig {
-        minSdk = 26
+        minSdk = ProjectConfig.androidMinSdk
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = ProjectConfig.javaVersion
+        targetCompatibility = ProjectConfig.javaVersion
     }
 }

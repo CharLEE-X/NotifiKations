@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -19,6 +19,9 @@ import kotlinx.cinterop.useContents
 import platform.UIKit.UIViewController
 import platform.UIKit.UIWindow
 
+/**
+ * The [MainViewController] function is responsible for displaying the content of the application.
+ */
 @Suppress("FunctionName", "unused")
 fun MainViewController(window: UIWindow): UIViewController {
     return ComposeUIViewController {

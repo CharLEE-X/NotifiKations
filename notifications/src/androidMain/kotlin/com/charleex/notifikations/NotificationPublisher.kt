@@ -1,5 +1,5 @@
-/*
- * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
+/**
+ * Copyright (c) 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
 package com.charleex.notifikations
@@ -10,7 +10,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 
-class NotificationPublisher : BroadcastReceiver() {
+internal class NotificationPublisher : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

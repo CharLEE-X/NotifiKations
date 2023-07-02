@@ -1,5 +1,5 @@
-/*
- * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
+/**
+ * Copyright (c) 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
 package com.charleex.notifikations
@@ -14,8 +14,9 @@ internal class IdentifiableIntent(
 ) : Intent(packageContext, cls) {
     override fun filterEquals(other: Intent?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (this.id != (other as IdentifiableIntent).id) return false
+        if (javaClass != other?.javaClass || this.id != (other as IdentifiableIntent).id) {
+            return false
+        }
         return true
     }
 }

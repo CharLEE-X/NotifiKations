@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -9,16 +9,12 @@ import com.charleex.notifikations.model.Permission
 import com.charleex.notifikations.model.PermissionState
 import com.charleex.notifikations.util.PERMISSION_CHECK_FLOW_FREQUENCY
 import com.charleex.notifikations.util.infiniteFlowOf
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 /**
  * The NotificationSchedulingService interface provides methods for initializing,
  * sending notifications, and canceling notifications.
  */
-expect class NotifiKations : NotificationService
-
 interface NotificationService {
     /**
      * Sends a notification of the specified type.

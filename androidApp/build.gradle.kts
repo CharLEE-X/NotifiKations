@@ -1,18 +1,20 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
+
 plugins {
     id("com.android.application")
     kotlin("android")
     id("org.jetbrains.compose")
 }
 
-group = libs.versions.groupId.get()
-version = libs.versions.version.get()
+group = ProjectConfig.groupId + ".${ProjectConfig.artifactId}.android"
+version = ProjectConfig.version
 
 android {
     namespace = project.group.toString()
-    compileSdk = 33
+    compileSdk = ProjectConfig.androidCompileSdk
     defaultConfig {
         applicationId = project.group.toString()
-        minSdk = 26
+        minSdk = ProjectConfig.androidMinSdk
         targetSdk = targetSdk
         versionCode = 1
         versionName = "1.0"
@@ -23,27 +25,22 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeMultiplatform.get()
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = ProjectConfig.javaVersion
+        targetCompatibility = ProjectConfig.javaVersion
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = ProjectConfig.jvmTarget
     }
 }
 
 dependencies {
-    implementation(project(":compose"))
+    implementation(projects.compose)
     implementation(compose.ui)
     implementation(compose.runtime)
     implementation(compose.foundation)
