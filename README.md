@@ -2,6 +2,7 @@
 ![Kotlin Version](https://img.shields.io/badge/Kotlin-1.8.20-orange)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/CharLEE-X/notifiKations)](https://github.com/CharLEE-X/notifiKations/releases)
 
+
 # NotifiKations
 
 NotifiKations is a Kotlin Multiplatform library for Android and iOS that allows you to send local

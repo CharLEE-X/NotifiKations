@@ -1,5 +1,5 @@
-/*
- * Copyright 2023 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
+/**
+ * Copyright (c) 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
 package com.charleex.notifikations.delegate
@@ -11,14 +11,13 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
-import com.charleex.notifications.R
+import com.charleeex.notifikations.R
 import com.charleex.notifikations.NotifiKations
 import com.charleex.notifikations.model.NotificationSettings
-import com.charleex.notifikations.model.Permission
 import com.charleex.notifikations.model.PermissionState
+import com.charleex.notifikations.uti.checkPermissions
+import com.charleex.notifikations.uti.openAppSettingsPage
 import com.russhwolf.settings.Settings
-import com.txconnected.mobox.component.permissions.util.checkPermissions
-import com.txconnected.mobox.component.permissions.util.openAppSettingsPage
 import kotlinx.serialization.json.Json
 
 internal class NotificationLocalPermissionDelegate(
@@ -45,7 +44,7 @@ internal class NotificationLocalPermissionDelegate(
     }
 
     override fun openSettingPage() {
-        context.openAppSettingsPage(Permission.LOCAL_NOTIFICATIONS)
+        context.openAppSettingsPage()
     }
 
     companion object {
@@ -58,7 +57,7 @@ private val localNotificationPermissions: List<String> =
         listOf(Manifest.permission.POST_NOTIFICATIONS)
     } else emptyList()
 
-fun Settings.readNotificationStringOption(): Map<String, String>? {
-    val notificationStringMap = this.getStringOrNull(NotifiKations.NOTIFIKATION_SETTINGS)
+internal fun Settings.readNotificationStringOption(): Map<String, String>? {
+    val notificationStringMap = this.getStringOrNull(NotifiKations.NOTIFICATION_SETTINGS)
     return notificationStringMap?.let { Json.decodeFromString(it) }
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -83,11 +83,27 @@ internal fun LocationNotificationContent(notifiKations: NotifiKations) {
     val scope = rememberCoroutineScope()
 
     var hasLocationNotification by remember { mutableStateOf(false) }
-    var instantNotificationTitle by remember { mutableStateOf("Lose Yourself in Your Journey") }
-    var instantNotificationDescription by remember { mutableStateOf("Assessing if you're making moves, seizing opportunities like Eminem. Stay tuned for the ultimate success story!") }
+    var instantNotificationTitle by remember {
+        mutableStateOf("Lose Yourself in Your Journey")
+    }
+    var instantNotificationDescription by remember {
+        mutableStateOf(
+            "Assessing if you're making moves, seizing opportunities like Eminem. " +
+                    "Stay tuned for the ultimate success story!"
+        )
+    }
 
-    var scheduledNotificationTitle by remember { mutableStateOf("Lose Yourself in Your Journey") }
-    var scheduledNotificationDescription by remember { mutableStateOf("Assessing if you're making moves, seizing opportunities like Eminem. Stay tuned for the ultimate success story!") }
+    var scheduledNotificationTitle by remember {
+        mutableStateOf("Lose Yourself in Your Journey")
+    }
+    var scheduledNotificationDescription by remember {
+        mutableStateOf(
+            "Assessing if you're making moves, seizing opportunities like Eminem. " +
+                    "Stay tuned for the ultimate success story!"
+        )
+    }
+
+    @Suppress("MagicNumber")
     var scheduledNotificationDelay: Int by remember { mutableStateOf(5) }
 
     ExpandableCard(headerText = "Collecting location notification", expanded = true) {
@@ -114,7 +130,11 @@ internal fun LocationNotificationContent(notifiKations: NotifiKations) {
                 text = "Dismiss location notification",
                 onClick = {
                     scope.launch {
-                        notifiKations.cancelNotifications(listOf(NotificationService.COLLECTING_LOCATION_NOTIFICATION_ID.toString()))
+                        notifiKations.cancelNotifications(
+                            listOf(
+                                NotificationService.COLLECTING_LOCATION_NOTIFICATION_ID.toString()
+                            )
+                        )
                         hasLocationNotification = false
                     }
                 },
@@ -171,7 +191,7 @@ internal fun LocationNotificationContent(notifiKations: NotifiKations) {
         Button(
             onClick = {
                 scope.launch {
-                    val notification = notifiKations.schedule(
+                    notifiKations.schedule(
                         notificationType = NotificationType.Scheduled(
                             title = scheduledNotificationTitle,
                             body = scheduledNotificationDescription,

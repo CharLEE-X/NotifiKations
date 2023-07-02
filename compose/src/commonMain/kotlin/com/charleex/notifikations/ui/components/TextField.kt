@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -46,6 +46,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 
+const val HALF_SECOND = 500
+
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("FunctionName")
 @ExperimentalMaterialApi
@@ -90,12 +92,14 @@ internal fun AppTextField(
 
     val scaleState by animateFloatAsState(
         targetValue = if (focusState) 1.02f else 1f,
-        animationSpec = tween(500)
+        animationSpec = tween(HALF_SECOND)
     )
+
+    @Suppress("MagicNumber")
     val backgroundColorState by animateColorAsState(
         targetValue = if (focusState)
             backgroundColor.copy(alpha = .5f) else backgroundColor,
-        animationSpec = tween(500)
+        animationSpec = tween(HALF_SECOND)
     )
     var wasAutoFilled by remember { mutableStateOf(false) }
 
@@ -170,7 +174,8 @@ internal fun AppTextField(
         keyboardActions = keyboardActions,
         textStyle = MaterialTheme.typography.body2.copy(color = textColor),
         colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = if (wasAutoFilled) Color(0xFFFFFDE7) else backgroundColorState,
+            backgroundColor = if (wasAutoFilled) Color.Yellow.copy(alpha = .5f)
+            else backgroundColorState,
         ),
         modifier = modifier
             .fillMaxWidth()

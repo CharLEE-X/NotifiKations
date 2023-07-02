@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -61,12 +61,14 @@ internal fun ExpandableCard(
     val isPressed by interactionSource.collectIsPressedAsState()
 
     val pressed = updateTransition(targetState = isPressed, label = "Card")
+    @Suppress("MagicNumber")
     val cardScale by pressed.animateFloat(label = "Card scale") { state ->
         if (state) .99f else 1f
     }
 
     // Expanded state
     var checked by rememberSaveable { mutableStateOf(expanded) }
+    @Suppress("MagicNumber")
     val headerIconRotation by animateFloatAsState(if (checked) 180f else 0f)
     val contentAlpha by animateFloatAsState(if (checked) 1f else 0f)
 

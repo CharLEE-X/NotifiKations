@@ -1,10 +1,6 @@
 [versions]
-artifactId = "NotifiKations"
-groupId = "com.charleex.notifications"
-version = "0.1.1"
-
 activityCompose = "1.7.1"
-agp = "8.0.2"
+agp = "7.4.0"
 androidxCore = "1.10.1"
 androidxMaterial = "1.9.0"
 androidxTestCore = "1.5.0"
@@ -13,6 +9,8 @@ ballast = "3.0.1"
 buildKonfig = "0.13.3"
 composeMultiplatform = "1.4.0"
 coroutines = "1.6.4" # version 1.7.0-1.7.1 has a bug that breaks the ios app while compiling Job()
+detekt = "1.23.0"
+dokka = "1.8.20"
 junit = "4.13.2"
 junitExt = "1.1.5"
 kermit = "2.0.0-RC4"

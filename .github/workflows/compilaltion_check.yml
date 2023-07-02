@@ -3,7 +3,7 @@ name: KMP library compilation check
 on:
   pull_request:
     branches:
-      - master
+      - main
       - develop
 
 jobs:

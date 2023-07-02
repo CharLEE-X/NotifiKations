@@ -1,34 +1,28 @@
-/*
- * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
+/**
+ * Copyright (c) 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
-package com.txconnected.mobox.component.permissions.util
+package com.charleex.notifikations.uti
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import com.charleex.notifikations.model.Permission
 import com.charleex.notifikations.model.PermissionState
-import com.charleex.notifikations.util.CannotOpenSettingsException
 
 internal fun Context.openPage(
     action: String,
     newData: Uri? = null,
-    onError: (Exception) -> Unit,
 ) {
-    try {
-        val intent = Intent(action).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            newData?.let { data = it }
-        }
-        startActivity(intent)
-    } catch (e: Exception) {
-        onError(e)
+    val intent = Intent(action).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        newData?.let { data = it }
     }
+    startActivity(intent)
 }
 
 internal fun checkPermissions(
@@ -47,17 +41,14 @@ internal fun checkPermissions(
     // we can't check permission rationale, so we return NOT_DETERMINED. It makes not difference
     // for AppState, because permission is not granted anyway. Code below matters only in the UI,
     // but the Activity is ready at this point.
-    val isAllRequestRationale: Boolean = try {
-        permissions.all {
-            !activity.value.shouldShowRequestPermissionRationale(it)
-        }
-    } catch (t: Throwable) {
-        t.printStackTrace()
-        true
+    val isAllRequestRationale: Boolean = permissions.all {
+        !activity.value.shouldShowRequestPermissionRationale(it)
     }
     return if (isAllRequestRationale) PermissionState.NOT_DETERMINED
     else PermissionState.DENIED
 }
+
+private const val REQUEST_CODE = 100
 
 internal fun Activity.providePermissions(
     permissions: List<String>,
@@ -65,17 +56,16 @@ internal fun Activity.providePermissions(
 ) {
     try {
         ActivityCompat.requestPermissions(
-            this, permissions.toTypedArray(), 100
+            this, permissions.toTypedArray(), REQUEST_CODE
         )
-    } catch (t: Throwable) {
-        onError(t)
+    } catch (e: ActivityNotFoundException) {
+        onError(e)
     }
 }
 
-internal fun Context.openAppSettingsPage(permission: Permission) {
+internal fun Context.openAppSettingsPage() {
     openPage(
         action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
         newData = Uri.parse("package:$packageName"),
-        onError = { throw CannotOpenSettingsException(permission.name) }
     )
 }

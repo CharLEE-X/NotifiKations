@@ -1,16 +1,13 @@
 /*
- * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
+ * Copyright (c) 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.kotlin.dsl.`maven-publish`
-import org.gradle.kotlin.dsl.signing
-import java.util.*
+import java.util.Properties
 
 plugins {
     `maven-publish`
     signing
+    id("org.jetbrains.dokka")
 }
 
 // Stub secrets to let the project sync and build without the publication values set up
@@ -59,7 +56,6 @@ publishing {
 
     // Configure all publications
     publications.withType<MavenPublication> {
-
         // Stub javadoc.jar artifact
         artifact(javadocJar.get())
 
@@ -67,7 +63,7 @@ publishing {
         pom {
             name.set("MPP Sample library")
             description.set("Sample Kotlin Multiplatform library (jvm + ios + js) test")
-            url.set("https://github.com/KaterinaPetrova/mpp-sample-lib")
+            url.set("https://github.com/<your-github-repo>/mpp-sample-lib")
 
             licenses {
                 license {
@@ -77,21 +73,19 @@ publishing {
             }
             developers {
                 developer {
-                    id.set("KaterinaPetrova")
-                    name.set("Ekaterina Petrova")
-                    email.set("ekaterina.petrova@jetbrains.com")
+                    id.set("charlee-dev")
+                    name.set("Adrian Witaszak")
+                    email.set("adrianwitaszak@gmail.com")
                 }
             }
             scm {
-                url.set("https://github.com/KaterinaPetrova/mpp-sample-lib")
+                url.set("https://github.com/<your-github-repo>/mpp-sample-lib")
             }
-
         }
     }
 }
 
 // Signing artifacts. Signing.* extra properties values will be used
-
 signing {
     sign(publishing.publications)
 }

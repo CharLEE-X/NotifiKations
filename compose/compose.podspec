@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'compose'
-    spec.version                  = '1.0'
-    spec.homepage                 = 'Link to the Shared Module homepage'
+    spec.version                  = '0.0.1'
+    spec.homepage                 = 'https://github.com/CharLEE-X/notifiKations'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Some description for the Shared Module'
+    spec.summary                  = 'Kotlin Multiplatform library (Android + iOS)'
     spec.vendored_frameworks      = 'build/cocoapods/framework/compose.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target = '14.1'

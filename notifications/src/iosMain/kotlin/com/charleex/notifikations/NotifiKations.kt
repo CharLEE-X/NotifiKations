@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -37,6 +37,11 @@ import platform.UserNotifications.UNUserNotificationCenterDelegateProtocol
 import platform.darwin.NSObject
 import kotlin.time.Duration.Companion.seconds
 
+@Suppress("MatchingDeclarationName")
+/**
+ * The [NotifiKations] class implements provides methods for initializing,
+ * sending notifications, and canceling notifications.
+ */
 actual class NotifiKations(coroutineScope: CoroutineScope) : NotificationService {
     private val logger = Logger.withTag(NotifiKations::class.simpleName!!)
 
@@ -61,7 +66,7 @@ actual class NotifiKations(coroutineScope: CoroutineScope) : NotificationService
         coroutineScope = coroutineScope,
     )
 
-    override suspend fun schedule(notificationType: NotificationType): String? {
+    actual override suspend fun schedule(notificationType: NotificationType): Any? {
         if (checkPermission(Permission.LOCAL_NOTIFICATIONS).notGranted()
         ) return null
         return when (notificationType) {
@@ -87,22 +92,22 @@ actual class NotifiKations(coroutineScope: CoroutineScope) : NotificationService
         }
     }
 
-    override suspend fun cancelNotifications(ids: List<String>) {
+    actual override suspend fun cancelNotifications(ids: List<String>) {
         ids.ifEmpty { return }
         logger.v { "Cancelling pending notifications with IDs: [${ids.joinToString()}]" }
         notificationCenter.removePendingNotificationRequestsWithIdentifiers(ids)
         notificationCenter.removeDeliveredNotificationsWithIdentifiers(ids)
     }
 
-    override fun checkPermission(permission: Permission): PermissionState {
+    actual override fun checkPermission(permission: Permission): PermissionState {
         return notificationLocalPermissionDelegate.getPermissionState()
     }
 
-    override suspend fun providePermission(permission: Permission) {
+    actual override suspend fun providePermission(permission: Permission) {
         notificationLocalPermissionDelegate.providePermission()
     }
 
-    override fun openSettingPage(permission: Permission) {
+    actual override fun openSettingPage(permission: Permission) {
         notificationLocalPermissionDelegate.openSettingPage()
     }
 

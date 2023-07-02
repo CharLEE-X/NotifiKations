@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
  */
 
@@ -12,7 +12,7 @@ import platform.Foundation.NSURL
 import platform.UIKit.UIApplication
 import platform.UIKit.UIApplicationOpenSettingsURLString
 
-fun openNSUrl(string: String) {
+internal fun openNSUrl(string: String) {
     val settingsUrl: NSURL = NSURL.URLWithString(string)!!
     if (UIApplication.sharedApplication.canOpenURL(settingsUrl)) {
         UIApplication.sharedApplication.openURL(settingsUrl)
