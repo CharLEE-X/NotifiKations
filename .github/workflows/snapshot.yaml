@@ -1,11 +1,14 @@
-on: [push]
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   snapshot:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ ubuntu-latest, macOS-latest ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
