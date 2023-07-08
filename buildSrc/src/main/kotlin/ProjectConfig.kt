@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2023 Adrian Witaszak - CharLEE-X. Use of this source code is governed by the Apache 2.0 license.
+ */
+
 import org.gradle.api.JavaVersion
 
 /**
@@ -6,7 +10,7 @@ import org.gradle.api.JavaVersion
 
 object ProjectConfig {
     const val projectName = "NotifiKations"
-    const val groupId = "com.charleeex"
+    const val groupId = "com.charleex"
     const val artifactId = "notifikations"
     const val version = "0.0.1"
     const val description = "Kotlin Multiplatform library (Android + iOS)"

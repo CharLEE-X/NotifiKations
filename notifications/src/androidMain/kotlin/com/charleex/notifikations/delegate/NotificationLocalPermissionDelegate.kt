@@ -11,7 +11,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
-import com.charleeex.notifikations.R
+import com.charleex.notifikations.R
 import com.charleex.notifikations.NotifiKations
 import com.charleex.notifikations.model.NotificationSettings
 import com.charleex.notifikations.model.PermissionState
