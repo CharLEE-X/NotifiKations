@@ -105,4 +105,4 @@ signing {
 fun getExtraString(name: String): String = ext[name]?.toString()
     ?: findProperty(name)?.toString()
     ?: System.getenv(name)?.toString()
-    ?: error("Property '$name' not found")
+    ?: ""
