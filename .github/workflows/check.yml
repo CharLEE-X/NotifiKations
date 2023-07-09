@@ -28,5 +28,4 @@ jobs:
   Lint:
     - steps
       - name: Detekt
-      run: ./gradlew :notifications:detektAll
-
+        run: ./gradlew :notifications:detektAll
