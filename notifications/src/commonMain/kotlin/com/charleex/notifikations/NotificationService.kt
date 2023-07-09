@@ -69,4 +69,3 @@ interface NotificationService {
         const val COLLECTING_LOCATION_NOTIFICATION_ID = 1
     }
 }
-

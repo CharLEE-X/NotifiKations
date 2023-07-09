@@ -33,7 +33,6 @@ internal class NotificationPushPermissionDelegate(
         }
     }
 
-
     override fun getPermissionState(): PermissionState {
         return _permissionState
     }

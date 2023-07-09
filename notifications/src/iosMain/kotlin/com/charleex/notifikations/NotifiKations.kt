@@ -120,13 +120,14 @@ actual class NotifiKations(coroutineScope: CoroutineScope) : NotificationService
     ): String? {
         logger.v { "Scheduling local notification at ${delivery.toNSDate().description}." }
         val deliveryDate = delivery.toNSDate()
-        val allUnits = NSCalendarUnitSecond or
-                NSCalendarUnitMinute or
-                NSCalendarUnitHour or
-                NSCalendarUnitDay or
-                NSCalendarUnitMonth or
-                NSCalendarUnitYear or
-                NSCalendarUnitTimeZone
+        val allUnits =
+            NSCalendarUnitSecond or
+                    NSCalendarUnitMinute or
+                    NSCalendarUnitHour or
+                    NSCalendarUnitDay or
+                    NSCalendarUnitMonth or
+                    NSCalendarUnitYear or
+                    NSCalendarUnitTimeZone
         val dateComponents = NSCalendar.currentCalendar.components(allUnits, deliveryDate)
         // Using UNTimeIntervalNotificationTrigger is unstable in KMM, so we use UNCalendarNotificationTrigger instead.
         val trigger = UNCalendarNotificationTrigger.triggerWithDateMatchingComponents(

@@ -47,6 +47,7 @@ kotlin {
                 implementation(compose.material)
                 implementation(compose.materialIconsExtended)
                 implementation(libs.kotlin.dateTime)
+                implementation("com.charleex.notifikations:notifications:0.0.1")
             }
         }
         val androidMain by getting {

@@ -18,7 +18,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import co.touchlab.kermit.Logger
-import com.charleex.notifikations.R
 import com.charleex.notifikations.NotificationService.Companion.COLLECTING_LOCATION_NOTIFICATION_ID
 import com.charleex.notifikations.delegate.NotificationLocalPermissionDelegate
 import com.charleex.notifikations.delegate.readNotificationStringOption
@@ -34,7 +33,6 @@ import com.russhwolf.settings.SharedPreferencesSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
 import java.lang.System.currentTimeMillis
-
 
 @Suppress("MatchingDeclarationName")
 /**
@@ -170,11 +168,10 @@ actual class NotifiKations(
         }
 
         logger.v {
-            "Scheduling local notification $id, time ${
-                Instant.fromEpochMilliseconds(
-                    currentTimeMillis() + ONE_MINUTE_IN_MILLIS
-                )
-            }."
+            val time = Instant.fromEpochMilliseconds(
+                currentTimeMillis() + ONE_MINUTE_IN_MILLIS
+            )
+            "Scheduling local notification $id, time $time."
         }
         return builder.build()
     }
