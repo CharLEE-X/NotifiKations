@@ -10,14 +10,11 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
-// Stub secrets to let the project sync and build without the publication values set up
-ext["signing.keyId"] = null
+ext["signing.key"] = null
 ext["signing.password"] = null
-ext["signing.secretKeyRingFile"] = null
 ext["ossrhUsername"] = null
 ext["ossrhPassword"] = null
 
-// Grabbing secrets from local.properties file or from environment variables, which could be used on CI
 val secretPropsFile = project.rootProject.file("local.properties")
 if (secretPropsFile.exists()) {
     secretPropsFile.reader().use {
@@ -28,9 +25,8 @@ if (secretPropsFile.exists()) {
         ext[name.toString()] = value
     }
 } else {
-    ext["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
+    ext["signing.key"] = System.getenv("SIGNING_KEY")
     ext["signing.password"] = System.getenv("SIGNING_PASSWORD")
-    ext["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
     ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
     ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
 }
@@ -39,53 +35,62 @@ val javadocJar by tasks.registering(Jar::class) {
     archiveClassifier.set("javadoc")
 }
 
-fun getExtraString(name: String) = ext[name]?.toString()
+val signingTasks = tasks.withType<Sign>()
+tasks.withType<AbstractPublishToMaven>().configureEach {
+    dependsOn(signingTasks)
+}
 
-publishing {
-    // Configure maven central repository
-    repositories {
-        maven {
-            name = "sonatype"
-            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = getExtraString("ossrhUsername")
-                password = getExtraString("ossrhPassword")
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "sonatype"
+                setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = getExtraString("ossrhUsername")
+                    password = getExtraString("ossrhPassword")
+                }
             }
         }
-    }
 
-    // Configure all publications
-    publications.withType<MavenPublication> {
-        // Stub javadoc.jar artifact
-        artifact(javadocJar.get())
+        publications.withType<MavenPublication> {
+            artifact(javadocJar.get())
 
-        // Provide artifacts information requited by Maven Central
-        pom {
-            name.set("MPP Sample library")
-            description.set("Sample Kotlin Multiplatform library (jvm + ios + js) test")
-            url.set("https://github.com/<your-github-repo>/mpp-sample-lib")
+            pom {
+                name.set(AppConfig.projectName)
+                description.set(AppConfig.description)
+                url.set(AppConfig.url)
 
-            licenses {
-                license {
-                    name.set("MIT")
-                    url.set("https://opensource.org/licenses/MIT")
+                licenses {
+                    license {
+                        name.set(AppConfig.Licence.name)
+                        url.set(AppConfig.Licence.url)
+                    }
                 }
-            }
-            developers {
-                developer {
-                    id.set("charlee-dev")
-                    name.set("Adrian Witaszak")
-                    email.set("adrianwitaszak@gmail.com")
+                developers {
+                    developer {
+                        id.set(AppConfig.Developer.id)
+                        name.set(AppConfig.Developer.name)
+                        email.set(AppConfig.Developer.email)
+                    }
                 }
-            }
-            scm {
-                url.set("https://github.com/<your-github-repo>/mpp-sample-lib")
+                scm {
+                    url.set(AppConfig.url)
+                }
             }
         }
     }
 }
 
-// Signing artifacts. Signing.* extra properties values will be used
 signing {
+    useInMemoryPgpKeys(
+        getExtraString("signing.key"),
+        getExtraString("signing.password")
+    )
     sign(publishing.publications)
 }
+
+fun getExtraString(name: String): String = ext[name]?.toString()
+    ?: findProperty(name)?.toString()
+    ?: System.getenv(name)?.toString()
+    ?: error("Property '$name' not found")
