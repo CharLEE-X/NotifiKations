@@ -120,7 +120,8 @@ actual class NotifiKations(coroutineScope: CoroutineScope) : NotificationService
     ): String? {
         logger.v { "Scheduling local notification at ${delivery.toNSDate().description}." }
         val deliveryDate = delivery.toNSDate()
-        val allUnits = NSCalendarUnitSecond or
+        val allUnits =
+            NSCalendarUnitSecond or
                 NSCalendarUnitMinute or
                 NSCalendarUnitHour or
                 NSCalendarUnitDay or

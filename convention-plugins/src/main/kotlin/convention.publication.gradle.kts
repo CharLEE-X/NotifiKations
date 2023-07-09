@@ -31,8 +31,20 @@ if (secretPropsFile.exists()) {
     ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
 }
 
-val javadocJar by tasks.registering(Jar::class) {
+val dokkaOutputDir = "$buildDir/dokka"
+
+tasks.dokkaHtml {
+    outputDirectory.set(file(dokkaOutputDir))
+}
+
+val deleteDokkaOutputDir by tasks.register<Delete>("deleteDokkaOutputDirectory") {
+    delete(dokkaOutputDir)
+}
+
+val javadocJar = tasks.register<Jar>("javadocJar") {
+    dependsOn(deleteDokkaOutputDir, tasks.dokkaHtml)
     archiveClassifier.set("javadoc")
+    from(dokkaOutputDir)
 }
 
 val signingTasks = tasks.withType<Sign>()
@@ -45,7 +57,7 @@ afterEvaluate {
         repositories {
             maven {
                 name = "sonatype"
-                setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                setUrl("https://s01.oss.sonatype.org/service/local/")
                 credentials {
                     username = getExtraString("ossrhUsername")
                     password = getExtraString("ossrhPassword")
@@ -93,4 +105,4 @@ signing {
 fun getExtraString(name: String): String = ext[name]?.toString()
     ?: findProperty(name)?.toString()
     ?: System.getenv(name)?.toString()
-    ?: error("Property '$name' not found")
+    ?: ""

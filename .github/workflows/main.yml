@@ -4,7 +4,7 @@ on:
 
 jobs:
   create_staging_repository:
-    runs-on: ubuntu-latest
+    runs-on: 'self-hosted'
     name: Create staging repository
     outputs:
       repository-id: ${{ steps.create.outputs.repository-id }}
@@ -18,13 +18,13 @@ jobs:
           description: ${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}
 
   macos:
-    runs-on: macos-latest
+    runs-on: 'self-hosted'
     needs: create_staging_repository
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Configure JDK
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 17
       - name: Publish
@@ -38,7 +38,7 @@ jobs:
           GPG_PRIVATE_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
 
   finalize:
-    runs-on: ubuntu-latest
+    runs-on: 'self-hosted'
     needs: [ create_staging_repository,macos ]
     if: ${{ always() && needs.create_staging_repository.result == 'success' }}
     steps:

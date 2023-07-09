@@ -59,15 +59,15 @@ internal class NotificationLocalPermissionDelegate(
             settings ?: return@getNotificationSettingsWithCompletionHandler
             _permissionState = when {
                 settings.alertSetting != UNNotificationSettingEnabled ||
-                        settings.badgeSetting != UNNotificationSettingEnabled ||
-                        settings.lockScreenSetting != UNNotificationSettingEnabled ||
-                        settings.notificationCenterSetting() != UNNotificationSettingEnabled ||
-                        settings.authorizationStatus == UNAuthorizationStatusDenied ||
-                        settings.authorizationStatus == UNAuthorizationStatusEphemeral
+                    settings.badgeSetting != UNNotificationSettingEnabled ||
+                    settings.lockScreenSetting != UNNotificationSettingEnabled ||
+                    settings.notificationCenterSetting() != UNNotificationSettingEnabled ||
+                    settings.authorizationStatus == UNAuthorizationStatusDenied ||
+                    settings.authorizationStatus == UNAuthorizationStatusEphemeral
                 -> PermissionState.DENIED
 
                 settings.authorizationStatus == UNAuthorizationStatusAuthorized ||
-                        settings.authorizationStatus == UNAuthorizationStatusProvisional
+                    settings.authorizationStatus == UNAuthorizationStatusProvisional
                 -> PermissionState.GRANTED
 
                 settings.authorizationStatus == UNAuthorizationStatusNotDetermined

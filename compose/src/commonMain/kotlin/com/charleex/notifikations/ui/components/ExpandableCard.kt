@@ -136,7 +136,6 @@ internal fun ExpandableCard(
     }
 }
 
-
 @Composable
 internal fun InfoText(
     modifier: Modifier = Modifier,
