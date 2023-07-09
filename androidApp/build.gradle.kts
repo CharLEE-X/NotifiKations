@@ -28,12 +28,12 @@ android {
             isMinifyEnabled = false
         }
     }
-    compileOptions {
-        sourceCompatibility = ProjectConfig.javaVersion
-        targetCompatibility = ProjectConfig.javaVersion
-    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_17
+//        targetCompatibility = JavaVersion.VERSION_17
+//    }
     kotlinOptions {
-        jvmTarget = ProjectConfig.jvmTarget
+        jvmTarget = "17"
     }
 }
 

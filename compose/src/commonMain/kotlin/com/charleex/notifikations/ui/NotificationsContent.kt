@@ -76,7 +76,6 @@ internal fun SettingsSection(
     }
 }
 
-
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun LocationNotificationContent(notifiKations: NotifiKations) {
@@ -88,8 +87,7 @@ internal fun LocationNotificationContent(notifiKations: NotifiKations) {
     }
     var instantNotificationDescription by remember {
         mutableStateOf(
-            "Assessing if you're making moves, seizing opportunities like Eminem. " +
-                    "Stay tuned for the ultimate success story!"
+            "Assessing if you're making moves, seizing opportunities like Eminem."
         )
     }
 
@@ -98,8 +96,7 @@ internal fun LocationNotificationContent(notifiKations: NotifiKations) {
     }
     var scheduledNotificationDescription by remember {
         mutableStateOf(
-            "Assessing if you're making moves, seizing opportunities like Eminem. " +
-                    "Stay tuned for the ultimate success story!"
+            "Assessing if you're making moves, seizing opportunities like Eminem. Stay tuned for the ultimate success story!"
         )
     }
 
