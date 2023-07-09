@@ -9,7 +9,7 @@ include(
     ":compose",
     ":notifications",
 )
-//includeBuild("convention-plugins")
+includeBuild("convention-plugins")
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
@@ -18,7 +18,6 @@ pluginManagement {
         google()
         gradlePluginPortal()
         mavenCentral()
-        maven("https://jitpack.io")
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }

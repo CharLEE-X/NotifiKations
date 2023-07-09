@@ -12,8 +12,8 @@ jobs:
       - id: create
         uses: nexus-actions/create-nexus-staging-repo@main
         with:
-          username: ${{ secrets.SONATYPE_USERNAME }}
-          password: ${{ secrets.SONATYPE_PASSWORD }}
+          username: ${{ secrets.OSSRH_USERNAME }}
+          password: ${{ secrets.OSSRH_PASSWORD }}
           staging_profile_id: ${{ secrets.SONATYPE_PROFILE_ID }}
           description: ${{ github.repository }}/${{ github.workflow }}#${{ github.run_number }}
 
@@ -29,13 +29,13 @@ jobs:
           java-version: 17
       - name: Publish
         run: |
-          ./gradlew publishKotlinMultiplatformPublicationToSonatypeRepository
+          ./gradlew publishAllPublicationsToSonatypeRepository
         env:
           SONATYPE_REPOSITORY_ID: ${{ needs.create_staging_repository.outputs.repository-id }}
-          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          GPG_PRIVATE_PASSWORD: ${{ secrets.GPG_PRIVATE_PASSWORD }}
+          SONATYPE_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          GPG_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
+          GPG_PRIVATE_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
 
   finalize:
     runs-on: ubuntu-latest
@@ -46,13 +46,13 @@ jobs:
         if: ${{ needs.macos.result != 'success' }}
         uses: nexus-actions/drop-nexus-staging-repo@main
         with:
-          username: ${{ secrets.SONATYPE_USERNAME }}
+          username: ${{ secrets.OSSRH_USERNAME }}
           password: ${{ secrets.SONATYPE_PASSWORD }}
           staged_repository_id: ${{ needs.create_staging_repository.outputs.repository-id }}
       - name: Release
         if: ${{ needs.macos.result == 'success' }}
         uses: nexus-actions/release-nexus-staging-repo@main
         with:
-          username: ${{ secrets.SONATYPE_USERNAME }}
+          username: ${{ secrets.OSSRH_USERNAME }}
           password: ${{ secrets.SONATYPE_PASSWORD }}
           staged_repository_id: ${{ needs.create_staging_repository.outputs.repository-id }}
