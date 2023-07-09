@@ -1,15 +1,15 @@
-name: KMP library compilation check
+name: 'KMP library compilation check'
 
 on:
   pull_request:
     branches:
-      - main
-      - develop
+      - 'main'
+      - 'develop'
 
 jobs:
   checkout:
-    name: Check
-    runs-on: self-hosted
+    name: 'Check'
+    runs-on: 'self-hosted'
 
     steps:
       - uses: actions/checkout@v3
@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: 17
+          java-version: '17'
 
       - name: 'Run checks with Gradle'
-        run: './gradlew check --no-daemon
+        run: './gradlew check --no-daemon'
